@@ -1,7 +1,6 @@
 <?php
 
     $hotels = [
-
         [
             'name' => 'Hotel Belvedere',
             'description' => 'Hotel Belvedere Descrizione',
@@ -37,11 +36,16 @@
             'vote' => 2,
             'distance_to_center' => 50
         ],
-
     ];
 
-    
+    if($_GET['parking'] == 'false'){
+        echo 'false';
+    }else{
+        echo 'true';
+    }
 
+    var_dump($_GET);
+    var_dump($_GET['parking']);
 ?>
 
 <!DOCTYPE html>
@@ -55,10 +59,46 @@
 </head>
 <body>
     
-    <h1>HotelBelli</h1>
-    <h2>Il sito di hotel numero uno in Italia</h2>
+    <h1 class="px-2">HotelBelli</h1>
+    <h5 class="px-2">Il sito di hotel numero uno in Italia</h5>
 
-    <table class="table table-striped">
+    <div class="container pt-5">
+        <div class="row">
+
+            <form class="d-flex" action="./index.php">
+
+                <div class="col-auto">
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="parking" id="inlineRadio1" value="true" method="get" checked>
+                        <label class="form-check-label" for="inlineRadio1">
+                            Con parcheggio
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="parking" id="inlineRadio2" value="false" method="get">
+                        <label class="form-check-label" for="inlineRadio2">
+                            Senza parcheggio
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="col">
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="rating" placeholder="Inserisci il voto" method="get">
+                    </div>
+                </div>
+                
+                <div class="col px-2">
+                    <button type="submit" class="btn btn-primary">Cerca</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <table class="table table-striped mx-2">
         <thead>
             <tr>
                 <th scope="col">Nome</th>
@@ -69,7 +109,7 @@
             </tr>
         </thead>
         <tbody>
-                <?php foreach ($hotels as $hotel) : ?>
+                <?php foreach ($hotels as $hotel):?>
                     <tr>
                         <td><?php echo $hotel['name'] ?></td>
                         <td><?php echo $hotel['description'] ?></td>
@@ -85,6 +125,7 @@
                         <td><?php echo $hotel['distance_to_center'] . ' ' . 'km' ?></td>
                     </tr>
                 <?php endforeach; ?>
+                <?php ; ?>
         </tbody>
     </table>
     
