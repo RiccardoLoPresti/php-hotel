@@ -38,14 +38,43 @@
         ],
     ];
 
-    if($_GET['parking'] == 'false'){
-        echo 'false';
-    }else{
-        echo 'true';
+    $filteredhotels = $hotels;
+    
+    //var_dump($_GET);
+
+    if(!empty($_GET['parking'])){
+        $temp_hotels = [];
+
+        foreach ($filteredhotels as $hotel) {
+            if($hotel['parking']) $temp_hotels[]= $hotel;
+        }
+
+        $filteredhotels = $temp_hotels;
     }
 
-    var_dump($_GET);
-    var_dump($_GET['parking']);
+    //var_dump($filteredhotels);
+
+    if(isset($_GET['parking']) && empty($_GET['parking'])){
+        $temp_hotels = [];
+
+        foreach ($filteredhotels as $hotel) {
+            if(!$hotel['parking']) $temp_hotels[]= $hotel;
+        }
+
+        $filteredhotels = $temp_hotels;
+    }
+    
+    if(!empty($_GET['rating'])){
+        $temp_hotels = [];
+
+        foreach ($filteredhotels as $hotel) {
+            if($hotel['vote'] >= $_GET['rating']) $temp_hotels[]= $hotel;
+        }
+
+        $filteredhotels = $temp_hotels;
+    }
+
+    //var_dump($filteredhotels);
 ?>
 
 <!DOCTYPE html>
@@ -70,14 +99,14 @@
                 <div class="col-auto">
 
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="parking" id="inlineRadio1" value="true" method="get" checked>
+                        <input class="form-check-input" type="radio" name="parking" id="inlineRadio1" value="1" method="get">
                         <label class="form-check-label" for="inlineRadio1">
                             Con parcheggio
                         </label>
                     </div>
 
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="parking" id="inlineRadio2" value="false" method="get">
+                        <input class="form-check-input" type="radio" name="parking" id="inlineRadio2" value="" method="get">
                         <label class="form-check-label" for="inlineRadio2">
                             Senza parcheggio
                         </label>
@@ -109,23 +138,15 @@
             </tr>
         </thead>
         <tbody>
-                <?php foreach ($hotels as $hotel):?>
+                <?php foreach ($filteredhotels as $hotel):?>
                     <tr>
                         <td><?php echo $hotel['name'] ?></td>
                         <td><?php echo $hotel['description'] ?></td>
-                        <td><?php 
-                                if($hotel['parking'] === true){
-                                    echo $output = 'Si';
-                                }else{
-                                    echo $output = 'No';
-                                }
-                            ?>
-                        </td>
+                        <td><?php echo $hotel['parking'] ? 'Si' : 'No' ?></td>
                         <td><?php echo $hotel['vote'] ?></td>
                         <td><?php echo $hotel['distance_to_center'] . ' ' . 'km' ?></td>
                     </tr>
                 <?php endforeach; ?>
-                <?php ; ?>
         </tbody>
     </table>
     
